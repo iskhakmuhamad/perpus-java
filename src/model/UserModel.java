@@ -3,12 +3,9 @@ package model;
 import javax.swing.*;
 import java.sql.*;
 
-public class UserModel {
+import static utils.DbUtils.*;
 
-    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/perpus";//nama database kita di slash terakhir
-    static final String USER = "root";
-    static final String PASS = "";
+public class UserModel {
 
     Connection koneksi;
     Statement statement;//untuk perintah query

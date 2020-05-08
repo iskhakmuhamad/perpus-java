@@ -17,17 +17,15 @@ public class LoginController {
     public LoginController(final UserModel model, final VLogin view) {
         this.view = view;
         this.model = model;
-        view.btnLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                String username = view.getUsername();
-                String pass = view.getPassword();
-                if (model.cekLogin(username, pass)){
-                    view.dispose();
-                    VHome vHome = new VHome();
-                }else{
-                    JOptionPane.showMessageDialog(null, "Silahkan Ulangi Kembali");
-                }
+        view.btnLogin.addActionListener(actionEvent -> {
+            String username = view.getUsername();
+            String pass = view.getPassword();
+            if (model.cekLogin(username, pass)){
+                view.dispose();
+                VHome vHome = new VHome();
+            }else{
+                JOptionPane.showMessageDialog(null, "Silahkan Ulangi Kembali");
+                view.dispose();
             }
         });
     }
