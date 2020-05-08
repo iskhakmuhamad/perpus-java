@@ -2,6 +2,7 @@ package controller;
 
 import javafx.css.CssParser;
 import model.UserModel;
+import view.VHome;
 import view.VLogin;
 
 import javax.swing.*;
@@ -23,7 +24,7 @@ public class LoginController {
                 String pass = view.getPassword();
                 if (model.cekLogin(username, pass)){
                     view.dispose();
-                    PerpusController perpusController = new PerpusController();
+                    VHome vHome = new VHome();
                 }else{
                     JOptionPane.showMessageDialog(null, "Silahkan Ulangi Kembali");
                 }

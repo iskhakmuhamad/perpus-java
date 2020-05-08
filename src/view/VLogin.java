@@ -7,7 +7,7 @@ public class VLogin extends JFrame {
     JLabel lUser, lPass;
     JTextField tfUser;
     JPasswordField tfPass;
-    public JButton btnLogin = new JButton("Login");;
+    public JButton btnLogin = new JButton("Login");
 
     public VLogin() {
         setTitle("Login Perpustakaan");
@@ -19,9 +19,6 @@ public class VLogin extends JFrame {
         //textfield
         tfUser = new JTextField("");
         tfPass = new JPasswordField("");
-
-        //button
-        //btnLogin = new JButton("Login");
 
         setLayout(null);
         add(lUser);
