@@ -3,11 +3,11 @@ package view;
 import javax.swing.*;
 
 public class VLogin extends JFrame {
+    public JButton btnLogin = new JButton("Login");
     //Label
     JLabel lUser, lPass;
     JTextField tfUser;
     JPasswordField tfPass;
-    public JButton btnLogin = new JButton("Login");
 
     public VLogin() {
         setTitle("Login Perpustakaan");
@@ -35,9 +35,15 @@ public class VLogin extends JFrame {
 
         setSize(400, 200);
         setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
     }
-    public String getUsername(){ return tfUser.getText();}
-    public String getPassword(){ return tfPass.getText();}
+
+    public String getUsername() {
+        return tfUser.getText();
+    }
+
+    public String getPassword() {
+        return tfPass.getText();
+    }
 }

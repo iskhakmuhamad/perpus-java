@@ -1,13 +1,10 @@
 package controller;
 
-import javafx.css.CssParser;
 import model.UserModel;
 import view.VHome;
 import view.VLogin;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LoginController {
 
@@ -20,10 +17,10 @@ public class LoginController {
         view.btnLogin.addActionListener(actionEvent -> {
             String username = view.getUsername();
             String pass = view.getPassword();
-            if (model.cekLogin(username, pass)){
+            if (model.cekLogin(username, pass)) {
                 view.dispose();
                 VHome vHome = new VHome();
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Silahkan Ulangi Kembali");
                 view.dispose();
             }

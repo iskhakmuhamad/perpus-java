@@ -1,5 +1,6 @@
 import controller.HomeController;
 import model.BukuModel;
+import view.VCari;
 import view.VHome;
 
 public class Main {

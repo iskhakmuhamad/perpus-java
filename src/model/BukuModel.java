@@ -91,7 +91,7 @@ public class BukuModel {
             int jmlData = 0;//menampung jumlah data
             keyword = "'%" + keyword + "%'";
             String query = "SELECT * FROM buku WHERE " + kolom + " LIKE " + keyword; //pengambilan dara dalam java dari database
-            String[][] data = new String[getBanyakBukuCari(keyword,kolom)][7];
+            String[][] data = new String[getBanyakBukuCari(keyword, kolom)][7];
 
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) { //lanjut kedata selanjutnya jmlData bertambah
@@ -114,15 +114,15 @@ public class BukuModel {
         }
     }
 
-    public ArrayList<String> readBukuGenre() {
+    public ArrayList<String> readBukuFilter(String kolom) {
         try {
 
-           ArrayList<String> data = new ArrayList<>();
+            ArrayList<String> data = new ArrayList<>();
 
-            String query = "SELECT DISTINCT genre FROM buku "; //pengambilan dara dalam java dari database
+            String query = "SELECT DISTINCT "+ kolom +" FROM buku ";
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
-                String gen = resultSet.getString("genre");
+                String gen = resultSet.getString(kolom);
                 data.add(gen);
             }
             return data;

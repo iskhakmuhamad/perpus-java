@@ -13,7 +13,7 @@ public class UserModel {
     public UserModel() {
         try {
             Class.forName(JDBC_DRIVER);
-            koneksi = DriverManager.getConnection(DB_URL,USER ,PASS);
+            koneksi = DriverManager.getConnection(DB_URL, USER, PASS);
             System.out.println("Koneksi Berhasil");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
