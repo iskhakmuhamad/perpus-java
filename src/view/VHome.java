@@ -19,7 +19,7 @@ public class VHome extends JFrame {
         setTitle("BUKU");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        setSize(1000, 400);
+        setSize(1000, 500);
         setLayout(null);
         setLocationRelativeTo(null);
 
@@ -66,7 +66,6 @@ public class VHome extends JFrame {
         column.setPreferredWidth(110);
         column = table.getColumnModel().getColumn(6);
         column.setPreferredWidth(70);
-
     }
 
 }

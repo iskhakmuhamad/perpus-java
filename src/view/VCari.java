@@ -23,7 +23,6 @@ public class VCari extends JFrame {
     public VCari(String action) {
         JFrame frame = new JFrame(action);
         frame.setVisible(true);
-        setLayout(null);
         frame.setLocationRelativeTo(null);
         frame.setSize(new Dimension(400, 300));
         btnGo = new JButton(action);

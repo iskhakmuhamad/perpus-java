@@ -19,12 +19,12 @@ public class HomeController {
     String kolom = "";
 
     public HomeController(VHome view, BukuModel model) {
+
         if (model.getBanyakBuku() != 0) {
             buku = model.readBuku();
             view.setTitle("BUKU");
             view.table.setModel(new JTable(buku, KOLOM_BUKU).getModel());
             view.aturKolomBuku();
-
         }
 
 
@@ -44,12 +44,16 @@ public class HomeController {
                 } else {
                     kolom = "judul";
                 }
-                buku = model.searchBuku(cari.tfCari.getText(), kolom);
-                if (buku == null) {
-                    JOptionPane.showMessageDialog(null, "Maaf, Buku yang anda cari tidak ada!");
+                if (cari.tfCari.getText().equalsIgnoreCase("")) {
+                    JOptionPane.showMessageDialog(null, "Input Buku yang Dicari");
                 } else {
-                    view.table.setModel(new JTable(buku, KOLOM_BUKU).getModel());
-                    view.aturKolomBuku();
+                    buku = model.searchBuku(cari.tfCari.getText(), kolom);
+                    if (buku == null) {
+                        JOptionPane.showMessageDialog(null, "Maaf, Buku yang anda cari tidak ada!");
+                    } else {
+                        view.table.setModel(new JTable(buku, KOLOM_BUKU).getModel());
+                        view.aturKolomBuku();
+                    }
                 }
             });
         });
@@ -106,7 +110,6 @@ public class HomeController {
                 }
             });
         });
-
 
         view.btnTampil.addActionListener(actionEvent -> {
             buku = model.readBuku();

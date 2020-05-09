@@ -134,4 +134,69 @@ public class BukuModel {
         }
     }
 
+    public void insertBuku(String judul, String genre, String penulis, String penerbit, String lokasi, int stok) {
+        try {
+            String query = "INSERT INTO `buku` (`judul`, `genre`, `penulis` , `penerbit` , `lokasi` , `stok` ) " +
+                    "VALUES ('" + judul + "','" + genre + "','" + penulis + "','" + penerbit + "' ,'" + lokasi + "' ,'" + stok + "') ";
+            statement = koneksi.createStatement();
+            statement.executeUpdate(query);
+            System.out.println("Berhasil ditambahkan");
+            JOptionPane.showMessageDialog(null, "Data Berhasil ditambahkan");
+        } catch (Exception sql) {
+            System.out.println(sql.getMessage());
+            JOptionPane.showMessageDialog(null, sql.getMessage());
+        }
+    }
+
+    public void editBuku(int id, String judul, String genre, String penulis, String penerbit, String lokasi, int stok) {
+        try {
+            String query = "UPDATE buku SET judul = " + "'" + judul + "', genre = " + "'" + genre + "', penulis = " +
+                    "'" + penulis + "', penerbit = " + "'" + penerbit + "', lokasi = " + "'" + lokasi
+                    + "', stok = " + "'" + stok + "' " + "WHERE id_buku = " + id;
+            statement = koneksi.createStatement();
+            statement.executeUpdate(query);
+            System.out.println("Berhasil diubah");
+            JOptionPane.showMessageDialog(null, "Data Berhasil diubah");
+        } catch (Exception sql) {
+            System.out.println(sql.getMessage());
+        }
+    }
+
+    public String[][] getBukubyId(int id) {
+        try {
+            String query = "SELECT * FROM buku WHERE id_buku = " + "'" + id + "'";
+            String[][] data = new String[1][7];
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+
+                data[0][0] = resultSet.getString("id_buku");
+                data[0][1] = resultSet.getString("judul");
+                data[0][2] = resultSet.getString("genre");
+                data[0][3] = resultSet.getString("penulis");
+                data[0][4] = resultSet.getString("penerbit");
+                data[0][5] = resultSet.getString("lokasi");
+                data[0][6] = resultSet.getString("stok");
+            }
+            return data;
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error : " + e.getMessage());
+            System.out.println();
+            return null;
+        }
+
+    }
+
+    public void deleteBuku(int id) {
+        try {
+            String query = "DELETE FROM `buku` WHERE `id_buku` = '" + id + "'";
+            statement = koneksi.createStatement();
+            statement.executeUpdate(query);
+            JOptionPane.showMessageDialog(null, "Berhasil Dihapus");
+
+        } catch (SQLException sql) {
+            System.out.println(sql.getMessage());
+        }
+    }
+
 }
