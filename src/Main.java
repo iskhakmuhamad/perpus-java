@@ -1,9 +1,6 @@
 import controller.AdminController;
 import model.BukuModel;
-import view.VAdmin;
-import view.VCariAnggota;
-import view.VCariUser;
-import view.VTambahAnggota;
+import view.*;
 
 public class Main {
     public static void main(String[] args) {

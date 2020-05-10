@@ -2,6 +2,7 @@ package controller;
 
 import model.AnggotaModel;
 import model.BukuModel;
+import model.PinjamModel;
 import model.UserModel;
 import view.*;
 
@@ -14,7 +15,7 @@ import static utils.ColumnUtils.*;
 public class AdminController {
     VAdmin vAdmin;
     BukuModel bukuModel;
-    String[][] buku, anggota, user;
+    String[][] buku, anggota, user, pinjam;
     String kolom;
 
     public AdminController(VAdmin vAdmin, BukuModel bukuModel) {
@@ -55,7 +56,7 @@ public class AdminController {
             });
             cari.radio4.addActionListener(actionEvent1 -> {
                 cari.cbFilter.removeAllItems();
-                kolom = "pengarang";
+                kolom = "penerbit";
                 isiFilterBuku(cari, kolom);
             });
             cari.radio5.addActionListener(actionEvent1 -> {
@@ -219,6 +220,9 @@ public class AdminController {
         });
         vAdmin.btnBuku.addActionListener(actionEvent -> {
             halamanBuku();
+        });
+        vAdmin.btnPinjam.addActionListener(actionEvent -> {
+            halamanPinjam();
         });
     }
 
@@ -511,12 +515,210 @@ public class AdminController {
 
 
     private void halamanPinjam() {
+        VAdmin.halaman = "pinjam";
+        vAdmin.dispose();
+        this.vAdmin = new VAdmin();
+        vAdmin.btnPinjam.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2, true));
+        PinjamModel pinjamModel = new PinjamModel();
 
+        if (pinjamModel.getBanyakPinjam() != 0) {
+            pinjam = pinjamModel.readPinjam();
+            vAdmin.setTitle("PEMINJAMAN");
+            vAdmin.table.setModel(new JTable(pinjam, KOLOM_PINJAM).getModel());
+            vAdmin.aturKolomPinjam();
+        }
+
+        vAdmin.btnFilter.addActionListener(actionEvent -> {
+            VCariPinjam cari = new VCariPinjam("FILTER");
+            cari.radio1.isSelected();
+            kolom = "buku.judul";
+            isiFilterPinjam(pinjamModel, cari, kolom);
+
+            cari.radio1.addActionListener(actionEvent1 -> {
+                cari.cbFilter.removeAllItems();
+                kolom = "buku.judul";
+                isiFilterPinjam(pinjamModel, cari, kolom);
+            });
+            cari.radio2.addActionListener(actionEvent1 -> {
+                cari.cbFilter.removeAllItems();
+                kolom = "anggota.nama";
+                isiFilterPinjam(pinjamModel, cari, kolom);
+            });
+            cari.radio3.addActionListener(actionEvent1 -> {
+                cari.cbFilter.removeAllItems();
+                kolom = "anggota.alamat";
+                isiFilterPinjam(pinjamModel, cari, kolom);
+            });
+            cari.radio4.addActionListener(actionEvent1 -> {
+                cari.cbFilter.removeAllItems();
+                kolom = "pinjam.tgl_pinjam";
+                isiFilterPinjam(pinjamModel, cari, kolom);
+            });
+            cari.radio5.addActionListener(actionEvent1 -> {
+                cari.cbFilter.removeAllItems();
+                kolom = "pinjam.status";
+                isiFilterPinjam(pinjamModel, cari, kolom);
+            });
+
+            cari.btnGo.addActionListener(actionEvent1 -> {
+                pinjam = pinjamModel.searchPinjam(Objects.requireNonNull(cari.cbFilter.getSelectedItem()).toString(), kolom);
+                if (pinjam == null) {
+                    JOptionPane.showMessageDialog(null, "Maaf, Data Pinjam yang anda filter tidak ada!");
+                } else {
+                    vAdmin.table.setModel(new JTable(pinjam, KOLOM_PINJAM).getModel());
+                    vAdmin.aturKolomPinjam();
+                }
+            });
+        });
+
+        vAdmin.btnCari.addActionListener(actionEvent -> {
+            VCariPinjam cari = new VCariPinjam("CARI");
+            cari.btnGo.addActionListener(actionEvent1 -> {
+                if (cari.radio1.isSelected()) {
+                    kolom = "buku.judul";
+                } else if (cari.radio2.isSelected()) {
+                    kolom = "anggota.nama";
+                } else if (cari.radio3.isSelected()) {
+                    kolom = "anggota.alamat";
+                } else if (cari.radio4.isSelected()) {
+                    kolom = "pinjam.tgl_pinjam";
+                } else if (cari.radio5.isSelected()) {
+                    kolom = "pinjam.status";
+                } else {
+                    kolom = "buku.judul";
+                }
+                if (cari.tfCari.getText().equalsIgnoreCase("")) {
+                    JOptionPane.showMessageDialog(null, "Input Data Pinjam yang Dicari");
+                } else {
+                    pinjam = pinjamModel.searchPinjam(cari.tfCari.getText(), kolom);
+                    if (pinjam == null) {
+                        JOptionPane.showMessageDialog(null, "Maaf, Data Pinjam yang anda cari tidak ada!");
+                    } else {
+                        vAdmin.table.setModel(new JTable(pinjam, KOLOM_PINJAM).getModel());
+                        vAdmin.aturKolomPinjam();
+                    }
+                }
+            });
+        });
+
+        vAdmin.btnTampil.addActionListener(actionEvent -> {
+            pinjam = pinjamModel.readPinjam();
+            vAdmin.setTitle("PEMINJAMAN");
+            vAdmin.table.setModel(new JTable(pinjam, KOLOM_PINJAM).getModel());
+            vAdmin.aturKolomPinjam();
+        });
+
+        vAdmin.btnHapus.addActionListener(actionEvent -> {
+            String input = JOptionPane.showInputDialog("Input Id data pinjam yang akan dihapus");
+            try {
+                int hapus = Integer.parseInt(input);
+                pinjamModel.deletePinjam(hapus);
+                pinjam = pinjamModel.readPinjam();
+                vAdmin.table.setModel(new JTable(pinjam, KOLOM_PINJAM).getModel());
+                vAdmin.aturKolomPinjam();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(null, "Gagal hapus data pinjam id buku harus berupa angka");
+            }
+        });
+
+        vAdmin.btnTambah.addActionListener(actionEvent -> {
+            VTambahPinjam vTambahPinjam = new VTambahPinjam("Tambah");
+
+            BukuModel bukuModel = new BukuModel();
+            AnggotaModel anggotaModel = new AnggotaModel();
+            buku = bukuModel.readBuku();
+            anggota = anggotaModel.readAnggota();
+            for (String[] strings : buku) {
+                vTambahPinjam.tJudul.addItem(strings[1]);
+            }
+            for (String[] strings : anggota) {
+                vTambahPinjam.tNama.addItem(strings[1]);
+            }
+            vTambahPinjam.btnTambah.addActionListener(actionEvent1 -> {
+                String nama = Objects.requireNonNull(vTambahPinjam.tNama.getSelectedItem()).toString();
+                String judul = Objects.requireNonNull(vTambahPinjam.tJudul.getSelectedItem()).toString();
+                int id_anggota = 0, id_buku = 0;
+                for (String[] strings : buku) {
+                    if (strings[1].equals(judul))
+                        id_buku = Integer.parseInt(strings[0]);
+                }
+                for (String[] strings : anggota) {
+                    if (strings[1].equals(nama))
+                        id_anggota = Integer.parseInt(strings[0]);
+                }
+                String tgl = vTambahPinjam.tTanggal.getText();
+                String status = vTambahPinjam.tStatus.getText();
+
+                pinjamModel.insertPinjam(id_anggota, id_buku, tgl, status);
+
+                pinjam = pinjamModel.readPinjam();
+                vAdmin.table.setModel(new JTable(pinjam, KOLOM_PINJAM).getModel());
+                vAdmin.aturKolomPinjam();
+            });
+        });
+        vAdmin.btnEdit.addActionListener(actionEvent -> {
+            String[][] dataEdit;
+            String input = JOptionPane.showInputDialog("Input Id Pinjam yang akan diubah");
+            try {
+                int edit = Integer.parseInt(input);
+                dataEdit = pinjamModel.getPinjambyId(edit);
+                if (dataEdit[0][0] == null) {
+                    JOptionPane.showMessageDialog(null, "id Pinjam tidak ditemukan");
+                } else {
+                    dataEdit = pinjamModel.getPinjambyId(edit);
+                    VTambahPinjam vEdit = new VTambahPinjam("Ubah");
+                    BukuModel bukuModel = new BukuModel();
+                    AnggotaModel anggotaModel = new AnggotaModel();
+                    buku = bukuModel.readBuku();
+                    anggota = anggotaModel.readAnggota();
+                    for (String[] strings : buku) {
+                        vEdit.tJudul.addItem(strings[1]);
+                    }
+                    for (String[] strings : anggota) {
+                        vEdit.tNama.addItem(strings[1]);
+                    }
+                    vEdit.tTanggal.setText(dataEdit[0][3]);
+                    vEdit.tStatus.setText(dataEdit[0][4]);
+                    vEdit.btnTambah.addActionListener(actionEvent1 -> {
+                        String nama = Objects.requireNonNull(vEdit.tNama.getSelectedItem()).toString();
+                        String judul = Objects.requireNonNull(vEdit.tJudul.getSelectedItem()).toString();
+                        int id_anggota = 0, id_buku = 0;
+                        for (String[] strings : buku) {
+                            if (strings[1].equals(judul))
+                                id_buku = Integer.parseInt(strings[0]);
+                        }
+                        for (String[] strings : anggota) {
+                            if (strings[1].equals(nama))
+                                id_anggota = Integer.parseInt(strings[0]);
+                        }
+                        String tgl = vEdit.tTanggal.getText();
+                        String status = vEdit.tStatus.getText();
+
+                        pinjamModel.editPinjam(edit,id_anggota, id_buku, tgl, status);
+
+                        pinjam = pinjamModel.readPinjam();
+                        vAdmin.table.setModel(new JTable(pinjam, KOLOM_PINJAM).getModel());
+                        vAdmin.aturKolomPinjam();
+                    });
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(null, "id Pinjam harus berupa angka");
+            }
+        });
+
+        allPageButton();
     }
 
     private void isiFilterAnggota(AnggotaModel anggotaModel, VCariAnggota vCariAnggota, String kolom) {
         for (int i = 0; i < anggotaModel.readAnggotaFilter(kolom).size(); i++)
             vCariAnggota.cbFilter.addItem(anggotaModel.readAnggotaFilter(kolom).get(i));
+    }
+
+    private void isiFilterPinjam(PinjamModel pinjamModel, VCariPinjam vCariPinjam, String kolom) {
+        for (int i = 0; i < pinjamModel.readPinjamFilter(kolom).size(); i++)
+            vCariPinjam.cbFilter.addItem(pinjamModel.readPinjamFilter(kolom).get(i));
     }
 
 }

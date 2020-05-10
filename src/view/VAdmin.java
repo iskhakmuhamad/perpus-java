@@ -28,7 +28,7 @@ public class VAdmin extends JFrame {
             String[][] data = new String[50][6];
             table = new JTable(data, KOLOM_ANGGOTA);
         }else if (halaman.equalsIgnoreCase("pinjam")){
-            String[][] data = new String[50][7];
+            String[][] data = new String[50][6];
             table = new JTable(data, KOLOM_PINJAM);
         }else if (halaman.equalsIgnoreCase("user")){
             String[][] data = new String[50][5];
@@ -113,7 +113,6 @@ public class VAdmin extends JFrame {
         column = table.getColumnModel().getColumn(6);
         column.setPreferredWidth(70);
     }
-
     public void aturKolomUser() {
         TableColumn column;
         table.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
@@ -143,5 +142,21 @@ public class VAdmin extends JFrame {
         column.setPreferredWidth(60);
         column = table.getColumnModel().getColumn(5);
         column.setPreferredWidth(110);
+    }
+    public void aturKolomPinjam() {
+        TableColumn column;
+        table.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        column = table.getColumnModel().getColumn(0);
+        column.setPreferredWidth(40);
+        column = table.getColumnModel().getColumn(1);
+        column.setPreferredWidth(140);
+        column = table.getColumnModel().getColumn(2);
+        column.setPreferredWidth(140);
+        column = table.getColumnModel().getColumn(3);
+        column.setPreferredWidth(220);
+        column = table.getColumnModel().getColumn(4);
+        column.setPreferredWidth(120);
+        column = table.getColumnModel().getColumn(5);
+        column.setPreferredWidth(120);
     }
 }

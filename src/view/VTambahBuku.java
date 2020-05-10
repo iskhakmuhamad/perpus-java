@@ -31,7 +31,6 @@ public class VTambahBuku extends JFrame {
         lStok.setFont(tahoma);
 
         tfJudul = new JTextField("");
-        tfJudul.setSize(200,20);
         tfGenre = new JTextField("");
         tfPenulis = new JTextField("");
         tfPenerbit = new JTextField("");
