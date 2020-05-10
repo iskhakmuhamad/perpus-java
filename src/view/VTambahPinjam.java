@@ -3,6 +3,7 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
+@SuppressWarnings("ALL")
 public class VTambahPinjam extends JFrame{
     JLabel lJudul, lNama, lTanggal, lStatus;
     public JTextField tTanggal, tStatus;

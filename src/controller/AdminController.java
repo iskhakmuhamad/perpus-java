@@ -12,6 +12,7 @@ import java.util.Objects;
 
 import static utils.ColumnUtils.*;
 
+@SuppressWarnings("ALL")
 public class AdminController {
     VAdmin vAdmin;
     BukuModel bukuModel;
@@ -24,6 +25,28 @@ public class AdminController {
         halamanBuku();
     }
 
+    private void allPageButton() {
+        //Navigasi Halaman
+        vAdmin.btnLogout.addActionListener(actionEvent -> {
+            vAdmin.dispose();
+            VHome vHome = new VHome();
+            BukuModel bukuModel = new BukuModel();
+            HomeController homeController = new HomeController(vHome, bukuModel);
+            JOptionPane.showMessageDialog(null, "Terimakasih, anda berhasil logout!");
+        });
+        vAdmin.btnUser.addActionListener(actionEvent -> {
+            halamanUser();
+        });
+        vAdmin.btnAnggota.addActionListener(actionEvent -> {
+            halamanAnggota();
+        });
+        vAdmin.btnBuku.addActionListener(actionEvent -> {
+            halamanBuku();
+        });
+        vAdmin.btnPinjam.addActionListener(actionEvent -> {
+            halamanPinjam();
+        });
+    }
     public void halamanBuku() {
 
         VAdmin.halaman = "buku";
@@ -202,28 +225,6 @@ public class AdminController {
     private void isiFilterBuku(VCariBuku vCariBuku, String kolom) {
         for (int i = 0; i < bukuModel.readBukuFilter(kolom).size(); i++)
             vCariBuku.cbFilter.addItem(bukuModel.readBukuFilter(kolom).get(i));
-    }
-
-    private void allPageButton() {
-        vAdmin.btnLogout.addActionListener(actionEvent -> {
-            vAdmin.dispose();
-            VHome vHome = new VHome();
-            BukuModel bukuModel = new BukuModel();
-            HomeController homeController = new HomeController(vHome, bukuModel);
-            JOptionPane.showMessageDialog(null, "Terimakasih, anda berhasil logout!");
-        });
-        vAdmin.btnUser.addActionListener(actionEvent -> {
-            halamanUser();
-        });
-        vAdmin.btnAnggota.addActionListener(actionEvent -> {
-            halamanAnggota();
-        });
-        vAdmin.btnBuku.addActionListener(actionEvent -> {
-            halamanBuku();
-        });
-        vAdmin.btnPinjam.addActionListener(actionEvent -> {
-            halamanPinjam();
-        });
     }
 
     private void halamanUser() {

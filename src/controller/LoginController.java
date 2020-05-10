@@ -1,7 +1,8 @@
 package controller;
 
+import model.BukuModel;
 import model.UserModel;
-import view.VHome;
+import view.VAdmin;
 import view.VLogin;
 
 import javax.swing.*;
@@ -19,7 +20,10 @@ public class LoginController {
             String pass = view.getPassword();
             if (model.cekLogin(username, pass)) {
                 view.dispose();
-                VHome vHome = new VHome();
+                VAdmin viewAdmin = new VAdmin();
+                BukuModel bukuModel = new BukuModel();
+                AdminController controller = new AdminController(viewAdmin, bukuModel);
+                JOptionPane.showMessageDialog(null, "Selamat Anda Berhasil ogin sebgai admin");
             } else {
                 JOptionPane.showMessageDialog(null, "Silahkan Ulangi Kembali");
                 view.dispose();
