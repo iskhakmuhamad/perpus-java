@@ -2,7 +2,7 @@ package controller;
 
 import model.BukuModel;
 import model.UserModel;
-import view.VCari;
+import view.VCariBuku;
 import view.VHome;
 import view.VLogin;
 
@@ -29,7 +29,7 @@ public class HomeController {
 
 
         view.btnCari.addActionListener(actionEvent -> {
-            VCari cari = new VCari("CARI");
+            VCariBuku cari = new VCariBuku("CARI");
             cari.btnGo.addActionListener(actionEvent1 -> {
                 if (cari.radio6.isSelected()) {
                     kolom = "stok";
@@ -59,7 +59,7 @@ public class HomeController {
         });
 
         view.btnFilter.addActionListener(actionEvent -> {
-            VCari cari = new VCari("FILTER");
+            VCariBuku cari = new VCariBuku("FILTER");
 
             //mengisi nilai default pada combo box
             cari.radio2.isSelected();

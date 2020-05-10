@@ -6,12 +6,11 @@ import java.util.ArrayList;
 
 import static utils.DbUtils.*;
 
-public class UserModel {
-
+public class AnggotaModel {
     Connection koneksi;
-    Statement statement;//untuk perintah query
+    Statement statement;
 
-    public UserModel() {
+    public AnggotaModel() {
         try {
             Class.forName(JDBC_DRIVER);
             koneksi = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -22,41 +21,21 @@ public class UserModel {
         }
     }
 
-    public boolean cekLogin(String username, String pass) {
-        String query = "SELECT * FROM user WHERE username = '" + username + "' AND password = '" + pass + "'";
-        boolean login = false;
-        try {
-            statement = koneksi.createStatement();
-            ResultSet rsLogin = statement.executeQuery(query);
-
-            rsLogin.next();
-            rsLogin.last(); //mengecek jumlah baris pada hasil query
-            if (rsLogin.getRow() == 1) {
-                JOptionPane.showMessageDialog(null, "Login Berhasil !");
-                login = true;
-            } else {
-                JOptionPane.showMessageDialog(null, "Maaf, Username / Password salah!");
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return login;
-    }
-
-    public String[][] readUser() {
+    public String[][] readAnggota() {
         try {
             int jmlData = 0;//menampung jumlah data
 
-            String[][] data = new String[getBanyakUser()][5];
+            String[][] data = new String[getBanyakAnggota()][6];
 
-            String query = "SELECT * FROM user ";
+            String query = "SELECT * FROM anggota ";
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
-                data[jmlData][0] = resultSet.getString("id");
+                data[jmlData][0] = resultSet.getString("id_anggota");
                 data[jmlData][1] = resultSet.getString("nama");
-                data[jmlData][2] = resultSet.getString("username");
-                data[jmlData][3] = resultSet.getString("password");
-                data[jmlData][4] = resultSet.getString("level");
+                data[jmlData][2] = resultSet.getString("gender");
+                data[jmlData][3] = resultSet.getString("alamat");
+                data[jmlData][4] = resultSet.getString("umur");
+                data[jmlData][5] = resultSet.getString("pendidikan");
 
                 jmlData++; //barisnya berpindah terus
             }
@@ -69,11 +48,11 @@ public class UserModel {
         }
     }
 
-    public int getBanyakUser() {//menghitung jumlah baris
+    public int getBanyakAnggota() {//menghitung jumlah baris
         int jmlData = 0;
         try {
             statement = koneksi.createStatement();
-            String query = "Select * from `user`";
+            String query = "Select * from `anggota`"; //pengambilan data dalam java dari database
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 jmlData++;
@@ -87,11 +66,11 @@ public class UserModel {
         }
     }
 
-    public int getBanyakUserCari(String keyword, String kolom) {//menghitung jumlah baris
+    public int getBanyakAnggotaCari(String keyword, String kolom) {//menghitung jumlah baris
         int jmlData = 0;
         try {
             statement = koneksi.createStatement();
-            String query = "SELECT * FROM user WHERE " + kolom + " LIKE " + keyword;
+            String query = "SELECT * FROM anggota WHERE " + kolom + " LIKE " + keyword;
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 jmlData++;
@@ -105,20 +84,21 @@ public class UserModel {
         }
     }
 
-    public String[][] searchUser(String keyword, String kolom) {
+    public String[][] searchAnggota(String keyword, String kolom) {
         try {
             int jmlData = 0;//menampung jumlah data
             keyword = "'%" + keyword + "%'";
-            String query = "SELECT * FROM user WHERE " + kolom + " LIKE " + keyword;
-            String[][] data = new String[getBanyakUserCari(keyword, kolom)][5];
+            String query = "SELECT * FROM anggota WHERE " + kolom + " LIKE " + keyword;
+            String[][] data = new String[getBanyakAnggotaCari(keyword, kolom)][6];
 
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) { //lanjut kedata selanjutnya jmlData bertambah
-                data[jmlData][0] = resultSet.getString("id");
+                data[jmlData][0] = resultSet.getString("id_anggota");
                 data[jmlData][1] = resultSet.getString("nama");
-                data[jmlData][2] = resultSet.getString("username");
-                data[jmlData][3] = resultSet.getString("password");
-                data[jmlData][4] = resultSet.getString("level");
+                data[jmlData][2] = resultSet.getString("gender");
+                data[jmlData][3] = resultSet.getString("alamat");
+                data[jmlData][4] = resultSet.getString("umur");
+                data[jmlData][5] = resultSet.getString("pendidikan");
 
                 jmlData++; //barisnya berpindah terus
             }
@@ -131,47 +111,67 @@ public class UserModel {
         }
     }
 
-
-    public void insertUser(String nama, String username, String password, String level) {
+    public ArrayList<String> readAnggotaFilter(String kolom) {
         try {
-            String query = "INSERT INTO `user` (`nama`, `username`, `password` , `level` ) " +
-                    "VALUES ('" + nama + "','" + username + "','" + password + "','" + level + "'  ) ";
+
+            ArrayList<String> data = new ArrayList<>();
+
+            String query = "SELECT DISTINCT " + kolom + " FROM anggota ";
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                String gen = resultSet.getString(kolom);
+                data.add(gen);
+            }
+            return data;
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error : " + e.getMessage());
+            System.out.println();
+            return null;
+        }
+    }
+
+    public void insertAnggota(String nama, String gender, String alamat, int umur, String pendidikan) {
+        try {
+            String query = "INSERT INTO `anggota` (`nama`, `gender`, `alamat` , `umur` , `pendidikan` ) " +
+                    "VALUES ('" + nama + "','" + gender + "','" + alamat + "','" + umur + "' ,'" + pendidikan + "' ) ";
             statement = koneksi.createStatement();
             statement.executeUpdate(query);
             System.out.println("Berhasil ditambahkan");
             JOptionPane.showMessageDialog(null, "Data Berhasil ditambahkan");
         } catch (Exception sql) {
             System.out.println(sql.getMessage());
-            JOptionPane.showMessageDialog(null, "Maaf, Username Sudah dipakai");
+            JOptionPane.showMessageDialog(null, sql.getMessage());
         }
     }
 
-    public void editUser(int id, String nama, String username, String password, String level) {
+    public void editAnggota(int id, String nama, String gender, String alamat, int umur, String pendidikan) {
         try {
-            String query = "UPDATE user SET nama = " + "'" + nama + "', username = " + "'" + username + "', password = " +
-                    "'" + password + "', level = " + "'" + level + "' " + "WHERE id = " + id;
+            String query = "UPDATE anggota SET nama = " + "'" + nama + "', gender = " + "'" + gender + "', alamat = " +
+                    "'" + alamat + "', umur = " + "'" + umur + "', pendidikan = " + "'" + pendidikan
+                    + "' "  + "WHERE id_anggota = " + id;
             statement = koneksi.createStatement();
             statement.executeUpdate(query);
             System.out.println("Berhasil diubah");
             JOptionPane.showMessageDialog(null, "Data Berhasil diubah");
         } catch (Exception sql) {
             System.out.println(sql.getMessage());
-            JOptionPane.showMessageDialog(null, "Maaf, Username Sudah dipakai");
         }
     }
 
-    public String[][] getUserbyId(int id) {
+    public String[][] getAnggotabyId(int id) {
         try {
-            String query = "SELECT * FROM user WHERE id = " + "'" + id + "'";
-            String[][] data = new String[1][5];
+            String query = "SELECT * FROM anggota WHERE id_anggota = " + "'" + id + "'";
+            String[][] data = new String[1][6];
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
 
-                data[0][0] = resultSet.getString("id");
+                data[0][0] = resultSet.getString("id_anggota");
                 data[0][1] = resultSet.getString("nama");
-                data[0][2] = resultSet.getString("username");
-                data[0][3] = resultSet.getString("password");
-                data[0][4] = resultSet.getString("level");
+                data[0][2] = resultSet.getString("gender");
+                data[0][3] = resultSet.getString("alamat");
+                data[0][4] = resultSet.getString("umur");
+                data[0][5] = resultSet.getString("pendidikan");
             }
             return data;
 
@@ -183,9 +183,9 @@ public class UserModel {
 
     }
 
-    public void deleteUser(int id) {
+    public void deleteAnggota(int id) {
         try {
-            String query = "DELETE FROM `user` WHERE `id` = '" + id + "'";
+            String query = "DELETE FROM `anggota` WHERE `id_anggota` = '" + id + "'";
             statement = koneksi.createStatement();
             statement.executeUpdate(query);
             JOptionPane.showMessageDialog(null, "Berhasil Dihapus");
@@ -194,6 +194,4 @@ public class UserModel {
             System.out.println(sql.getMessage());
         }
     }
-
-
 }

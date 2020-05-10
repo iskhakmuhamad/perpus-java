@@ -6,7 +6,7 @@ import java.awt.*;
 
 
 @SuppressWarnings("ALL")
-public class VCari extends JFrame {
+public class VCariBuku extends JFrame {
 
     JLabel label;
     public JRadioButton radio1 = new JRadioButton("Judul");
@@ -20,7 +20,7 @@ public class VCari extends JFrame {
     public JTextField tfCari = new JTextField();
     public JButton btnGo;
 
-    public VCari(String action) {
+    public VCariBuku(String action) {
         JFrame frame = new JFrame(action);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);

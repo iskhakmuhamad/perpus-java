@@ -8,7 +8,7 @@ import static utils.ColumnUtils.*;
 
 public class VAdmin extends JFrame {
     public JTable table;
-    public String halaman = "BUKU";
+    public static String halaman = "BUKU";
     public JButton btnCari, btnFilter, btnLogout, btnTampil;
     public JButton btnTambah, btnEdit, btnHapus;
     public JButton btnBuku, btnPinjam, btnUser, btnAnggota;
@@ -25,13 +25,13 @@ public class VAdmin extends JFrame {
         setLocationRelativeTo(null);
 
         if (halaman.equalsIgnoreCase("anggota")) {
-            String[][] data = new String[50][7];
+            String[][] data = new String[50][6];
             table = new JTable(data, KOLOM_ANGGOTA);
         }else if (halaman.equalsIgnoreCase("pinjam")){
             String[][] data = new String[50][7];
-            table = new JTable(data, KOLOM_BUKU);
+            table = new JTable(data, KOLOM_PINJAM);
         }else if (halaman.equalsIgnoreCase("user")){
-            String[][] data = new String[50][7];
+            String[][] data = new String[50][5];
             table = new JTable(data, KOLOM_USER);
         }else{
             String[][] data = new String[50][7];
@@ -65,7 +65,9 @@ public class VAdmin extends JFrame {
         add(btnAnggota);
 
         add(btnCari);
-        add(btnFilter);
+        if (!halaman.equalsIgnoreCase("user")) {
+            add(btnFilter);
+        }
         add(btnLogout);
         add(btnTampil);
 
@@ -116,17 +118,15 @@ public class VAdmin extends JFrame {
         TableColumn column;
         table.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         column = table.getColumnModel().getColumn(0);
-        column.setPreferredWidth(60);
+        column.setPreferredWidth(80);
         column = table.getColumnModel().getColumn(1);
-        column.setPreferredWidth(200);
+        column.setPreferredWidth(220);
         column = table.getColumnModel().getColumn(2);
-        column.setPreferredWidth(100);
+        column.setPreferredWidth(160);
         column = table.getColumnModel().getColumn(3);
-        column.setPreferredWidth(110);
+        column.setPreferredWidth(160);
         column = table.getColumnModel().getColumn(4);
-        column.setPreferredWidth(110);
-        column = table.getColumnModel().getColumn(5);
-        column.setPreferredWidth(110);
+        column.setPreferredWidth(150);
     }
     public void aturKolomAnggota() {
         TableColumn column;
@@ -134,13 +134,13 @@ public class VAdmin extends JFrame {
         column = table.getColumnModel().getColumn(0);
         column.setPreferredWidth(60);
         column = table.getColumnModel().getColumn(1);
-        column.setPreferredWidth(200);
+        column.setPreferredWidth(170);
         column = table.getColumnModel().getColumn(2);
         column.setPreferredWidth(100);
         column = table.getColumnModel().getColumn(3);
-        column.setPreferredWidth(210);
+        column.setPreferredWidth(260);
         column = table.getColumnModel().getColumn(4);
-        column.setPreferredWidth(110);
+        column.setPreferredWidth(60);
         column = table.getColumnModel().getColumn(5);
         column.setPreferredWidth(110);
     }
