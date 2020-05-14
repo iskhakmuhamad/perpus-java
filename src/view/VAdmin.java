@@ -65,9 +65,7 @@ public class VAdmin extends JFrame {
         add(btnAnggota);
 
         add(btnCari);
-        if (!halaman.equalsIgnoreCase("user")) {
-            add(btnFilter);
-        }
+        add(btnFilter);
         add(btnLogout);
         add(btnTampil);
 

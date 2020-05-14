@@ -128,6 +128,26 @@ public class UserModel {
         }
     }
 
+    public ArrayList<String> readUserFilter(String kolom) {
+        try {
+
+            ArrayList<String> data = new ArrayList<>();
+
+            String query = "SELECT DISTINCT " + kolom + " FROM user ";
+            ResultSet resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                String gen = resultSet.getString(kolom);
+                data.add(gen);
+            }
+            return data;
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error : " + e.getMessage());
+            System.out.println();
+            return null;
+        }
+    }
+
 
     public void insertUser(String nama, String username, String password, String level) {
         try {

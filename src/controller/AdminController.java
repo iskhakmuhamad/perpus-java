@@ -238,7 +238,7 @@ public class AdminController {
         }
 
         vAdmin.btnCari.addActionListener(actionEvent -> {
-            VCariUser cari = new VCariUser();
+            VCariUser cari = new VCariUser("Cari");
             cari.btnGo.addActionListener(actionEvent1 -> {
                 if (cari.radio1.isSelected()) {
                     kolom = "nama";
@@ -262,6 +262,28 @@ public class AdminController {
                 }
             });
         });
+        vAdmin.btnFilter.addActionListener(actionEvent -> {
+            VCariUser cari = new VCariUser("FILTER");
+            cari.radio3.isSelected();
+            kolom = "level";
+            isiFilterUser(cari, userModel, kolom);
+
+            cari.radio3.addActionListener(actionEvent1 -> {
+                cari.cbFilter.removeAllItems();
+                kolom = "level";
+                isiFilterUser(cari, userModel, kolom);
+            });
+
+            cari.btnGo.addActionListener(actionEvent1 -> {
+                user = userModel.searchUser(Objects.requireNonNull(cari.cbFilter.getSelectedItem()).toString(), kolom);
+                if (user == null) {
+                    JOptionPane.showMessageDialog(null, "Maaf, User yang anda filter tidak ada!");
+                } else {
+                    vAdmin.table.setModel(new JTable(user, KOLOM_USER).getModel());
+                    vAdmin.aturKolomUser();
+                }
+            });
+        });
 
         vAdmin.btnTampil.addActionListener(actionEvent -> {
             user = userModel.readUser();
@@ -276,8 +298,9 @@ public class AdminController {
                 String nama = tambahUser.tNama.getText();
                 String username = tambahUser.tUsername.getText();
                 String password = tambahUser.tPassword.getText();
+                String level = tambahUser.cbLevel.getSelectedItem().toString();
                 try {
-                    userModel.insertUser(nama, username, password, "Admin");
+                    userModel.insertUser(nama, username, password, level);
                     tambahUser.dispose();
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -320,7 +343,8 @@ public class AdminController {
                         String nama = vEditUser.tNama.getText();
                         String username = vEditUser.tUsername.getText();
                         String password = vEditUser.tPassword.getText();
-                        userModel.editUser(edit,nama,username,password,"Admin");
+                        String level = vEditUser.cbLevel.getSelectedItem().toString();
+                        userModel.editUser(edit,nama,username,password,level);
 
                         vEditUser.dispose();
                         user = userModel.readUser();
@@ -707,6 +731,10 @@ public class AdminController {
         allPageButton();
     }
 
+    private void isiFilterUser(VCariUser cariUser, UserModel userModel, String kolom) {
+        for (int i = 0; i < userModel.readUserFilter(kolom).size(); i++)
+            cariUser.cbFilter.addItem(userModel.readUserFilter(kolom).get(i));
+    }
 
     private void isiFilterBuku(VCariBuku vCariBuku, String kolom) {
         for (int i = 0; i < bukuModel.readBukuFilter(kolom).size(); i++)

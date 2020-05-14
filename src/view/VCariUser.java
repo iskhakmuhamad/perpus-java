@@ -9,37 +9,52 @@ public class VCariUser extends JFrame {
     public JRadioButton radio2 = new JRadioButton("Username");
     public JRadioButton radio3 = new JRadioButton("level");
     ButtonGroup grup = new ButtonGroup();
+    public JComboBox cbFilter;
     public JTextField tfCari = new JTextField();
     public JButton btnGo;
 
-    public VCariUser() {
+    public VCariUser(String action) {
         JFrame frame = new JFrame();
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
-        frame.setSize(new Dimension(400, 300));
-        frame.setTitle("Cari User");
-        btnGo = new JButton("Cari User");
+
+        frame.setTitle(action + " User");
+        btnGo = new JButton(action + " User");
 
 
-        label = new JLabel( "CARI BERDASARKAN : ");
+        label = new JLabel(action + " BERDASARKAN : ");
         label.setFont(new Font("TAHOMA", Font.ITALIC, 15));
 
         frame.add(label);
         //tampilan untuk fitur cari
-        frame.setLayout(new GridLayout(6, 1));
-        frame.add(radio1);
-        radio1.setHorizontalAlignment(JRadioButton.LEFT);
-        grup.add(radio1);
-        frame.add(radio2);
-        radio2.setHorizontalAlignment(JRadioButton.LEFT);
-        grup.add(radio2);
-        frame.add(radio3);
-        radio3.setHorizontalAlignment(JRadioButton.LEFT);
-        grup.add(radio3);
-
-        tfCari.setHorizontalAlignment(JTextField.CENTER);
-        tfCari.setSize(300, 20);
-        frame.add(tfCari);
+        if (action.equalsIgnoreCase("cari")) {
+            frame.setSize(new Dimension(400, 300));
+            frame.setLayout(new GridLayout(6, 1));
+            frame.add(radio1);
+            radio1.setHorizontalAlignment(JRadioButton.LEFT);
+            grup.add(radio1);
+            frame.add(radio2);
+            radio2.setHorizontalAlignment(JRadioButton.LEFT);
+            grup.add(radio2);
+            frame.add(radio3);
+            radio3.setHorizontalAlignment(JRadioButton.LEFT);
+            grup.add(radio3);
+        }else {
+            frame.setSize(new Dimension(400, 200));
+            frame.setLayout(new GridLayout(3, 1));
+            radio3.setHorizontalAlignment(JRadioButton.LEFT);
+            grup.add(radio3);
+        }
+        if (action.equalsIgnoreCase("cari")) {
+            //tampilan untuk fitur cari
+            tfCari.setHorizontalAlignment(JTextField.CENTER);
+            tfCari.setSize(300, 20);
+            frame.add(tfCari);
+        } else {
+            //tampilan untuk fitur filter
+            cbFilter = new JComboBox();
+            frame.add(cbFilter);
+        }
 
         frame.add(btnGo);
     }
