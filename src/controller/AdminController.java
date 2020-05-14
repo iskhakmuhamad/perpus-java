@@ -222,11 +222,6 @@ public class AdminController {
 
     }
 
-    private void isiFilterBuku(VCariBuku vCariBuku, String kolom) {
-        for (int i = 0; i < bukuModel.readBukuFilter(kolom).size(); i++)
-            vCariBuku.cbFilter.addItem(bukuModel.readBukuFilter(kolom).get(i));
-    }
-
     private void halamanUser() {
 
         VAdmin.halaman = "user";
@@ -710,6 +705,12 @@ public class AdminController {
         });
 
         allPageButton();
+    }
+
+
+    private void isiFilterBuku(VCariBuku vCariBuku, String kolom) {
+        for (int i = 0; i < bukuModel.readBukuFilter(kolom).size(); i++)
+            vCariBuku.cbFilter.addItem(bukuModel.readBukuFilter(kolom).get(i));
     }
 
     private void isiFilterAnggota(AnggotaModel anggotaModel, VCariAnggota vCariAnggota, String kolom) {

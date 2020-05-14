@@ -121,7 +121,7 @@ public class HomeController {
         view.btnLogin.addActionListener(actionEvent -> {
             VLogin vLogin = new VLogin();
             UserModel userModel = new UserModel();
-            LoginController controller = new LoginController(userModel, vLogin);
+            LoginController controller = new LoginController(userModel, vLogin, view);
         });
 
 

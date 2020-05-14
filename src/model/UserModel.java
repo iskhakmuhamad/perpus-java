@@ -22,9 +22,9 @@ public class UserModel {
         }
     }
 
-    public boolean cekLogin(String username, String pass) {
+    public String cekLogin(String username, String pass) {
         String query = "SELECT * FROM user WHERE username = '" + username + "' AND password = '" + pass + "'";
-        boolean login = false;
+        String level = "blum login";
         try {
             statement = koneksi.createStatement();
             ResultSet rsLogin = statement.executeQuery(query);
@@ -32,15 +32,12 @@ public class UserModel {
             rsLogin.next();
             rsLogin.last(); //mengecek jumlah baris pada hasil query
             if (rsLogin.getRow() == 1) {
-                JOptionPane.showMessageDialog(null, "Login Berhasil !");
-                login = true;
-            } else {
-                JOptionPane.showMessageDialog(null, "Maaf, Username / Password salah!");
+                level = rsLogin.getString("level");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return login;
+        return level;
     }
 
     public String[][] readUser() {
