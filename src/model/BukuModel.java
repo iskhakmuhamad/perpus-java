@@ -155,8 +155,8 @@ public class BukuModel {
                     + "', stok = " + "'" + stok + "' " + "WHERE id_buku = " + id;
             statement = koneksi.createStatement();
             statement.executeUpdate(query);
-            System.out.println("Berhasil diubah");
-            JOptionPane.showMessageDialog(null, "Data Berhasil diubah");
+            System.out.println("Buku Berhasil diubah");
+            JOptionPane.showMessageDialog(null, "Buku Berhasil diubah");
         } catch (Exception sql) {
             System.out.println(sql.getMessage());
         }
